@@ -1,0 +1,108 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --shadow-mentor-shadow: 0px 4px 20px rgba(110, 127, 185, 0.1);
+
+  --inset-54\%: 54%;
+  --inset-40\%: 40%;
+
+  /* Ngehost Brand Colors */
+  --color-primary: #00E0FF;
+  --color-secondary: #6366F1;
+  --color-accent: #8B5CF6;
+  --color-body-bg: #0D0D10;
+  --color-darkmode: #1A1A1F;
+  --color-tablebg: #1E1E24;
+  --color-border: #2A2A2F;
+  --color-lightblue: #00E0FF;
+  --color-lightsky: #F8FAFC;
+  --color-lightpurple: #A78BFA;
+  --color-neon-blue: #00E0FF;
+  --color-neon-purple: #8B5CF6;
+
+  --blur-390: 390px;
+
+  /* Ngehost Gradients */
+  --background-image-banner-image: linear-gradient(
+    135deg,
+    #0D0D10 0%,
+    #1E1E24 25%,
+    #2A2A2F 50%,
+    #1E1E24 75%,
+    #0D0D10 100%
+  );
+  --background-image-simple-bg: linear-gradient(
+    90deg,
+    rgba(0, 224, 255, 0.1),
+    rgba(139, 92, 246, 0.1) 97.15%
+  );
+  --background-image-arrow-bg: url('/images/simple/arrow-bg.png');
+  --background-image-newsletter: url('/images/newsletter/hands.svg');
+  
+  /* Ngehost Neon Effects */
+  --neon-glow: 0 0 20px rgba(0, 224, 255, 0.5);
+  --neon-glow-purple: 0 0 20px rgba(139, 92, 246, 0.5);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  section {
+    @apply py-14 bg-body-bg;
+  }
+
+  h1 {
+    @apply text-white font-bold lg:text-7xl sm:text-6xl text-5xl;
+  }
+
+  h2 {
+    @apply text-lightsky sm:text-5xl text-4xl font-bold;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-7xl mx-auto w-full px-4;
+  }
+  
+  /* Ngehost Neon Effects */
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(0, 224, 255, 0.5);
+  }
+  
+  .neon-glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  
+  .neon-glow-hover:hover {
+    box-shadow: 0 0 30px rgba(0, 224, 255, 0.8);
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}

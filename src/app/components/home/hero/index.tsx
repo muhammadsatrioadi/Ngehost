@@ -1,10 +1,35 @@
 "use client";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Banner = () => {
   const [isOpen, setOpen] = useState(false);
+  const [particles, setParticles] = useState<Array<{
+    left: string;
+    top: string;
+    x: number;
+    y: number;
+    duration: number;
+    delay: number;
+  }>>([]);
+
+  useEffect(() => {
+    const count = 20;
+    const generated = Array.from({ length: count }, () => {
+      const x = Math.random() * 100 - 50;
+      const y = Math.random() * 100 - 50;
+      return {
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        x,
+        y,
+        duration: Math.random() * 10 + 10,
+        delay: Math.random() * 5,
+      };
+    });
+    setParticles(generated);
+  }, []);
 
   const openModal = () => {
     setOpen(true);
@@ -22,26 +47,15 @@ const Banner = () => {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-accent/20 via-transparent to-transparent"></div>
       </div>
       
-      {/* Floating Particles */}
+      {/* Floating Particles (generated client-side to avoid SSR hydration mismatch) */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {particles.map((p, i) => (
           <motion.div
             key={i}
             className="absolute w-2 h-2 bg-primary/30 rounded-full"
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+            animate={{ x: [0, p.x], y: [0, p.y], opacity: [0, 1, 0] }}
+            transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
+            style={{ left: p.left, top: p.top }}
           />
         ))}
       </div>

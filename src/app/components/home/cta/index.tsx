@@ -1,34 +1,50 @@
 "use client";
 import { motion } from "framer-motion";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useEffect, useState } from "react";
 
 const CTA = () => {
+  const [particles, setParticles] = useState<Array<{
+    left: string;
+    top: string;
+    x: number;
+    y: number;
+    duration: number;
+    delay: number;
+  }>>([]);
+
+  useEffect(() => {
+    const count = 15;
+    const generated = Array.from({ length: count }, () => {
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      return {
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        x,
+        y,
+        duration: Math.random() * 15 + 10,
+        delay: Math.random() * 5,
+      };
+    });
+    setParticles(generated);
+  }, []);
+
   return (
     <section className="py-20 bg-gradient-to-br from-body-bg via-darkmode to-body-bg relative overflow-hidden" id="contact">
       {/* Background Effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10"></div>
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent"></div>
       
-      {/* Floating Particles */}
+      {/* Floating Particles (generated client-side to avoid SSR hydration mismatch) */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+        {particles.map((p, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-primary/40 rounded-full"
-            animate={{
-              x: [0, Math.random() * 200 - 100],
-              y: [0, Math.random() * 200 - 100],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 15 + 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+            animate={{ x: [0, p.x], y: [0, p.y], opacity: [0, 1, 0] }}
+            transition={{ duration: p.duration, repeat: Infinity, delay: p.delay }}
+            style={{ left: p.left, top: p.top }}
           />
         ))}
       </div>
